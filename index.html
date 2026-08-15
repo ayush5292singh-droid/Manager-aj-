@@ -1,361 +1,669 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#050807">
-  <title>KeyVault</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KeyVault</title>
+
+<style>
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+background:#030604;
+color:white;
+min-height:100vh;
+}
+
+button{
+font-family:inherit;
+-webkit-tap-highlight-color:transparent;
+}
+
+/* LOCK */
+
+#lockScreen{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:25px;
+background:
+radial-gradient(circle at 50% 15%,#173d29 0,#08110b 38%,#030604 75%);
+}
+
+.lockBox{
+width:100%;
+max-width:560px;
+padding:45px 38px 35px;
+background:#0c1510;
+border:1px solid #263d2f;
+border-radius:32px;
+text-align:center;
+box-shadow:0 30px 100px rgba(0,0,0,.7);
+}
+
+.logo{
+width:95px;
+height:95px;
+margin:auto;
+border-radius:28px;
+background:#153a26;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:48px;
+box-shadow:0 0 40px rgba(40,220,130,.12);
+}
+
+h1{
+font-size:38px;
+margin-top:22px;
+}
+
+.subtitle{
+color:#78857d;
+font-size:16px;
+margin-top:6px;
+}
+
+.status{
+display:inline-block;
+margin-top:20px;
+padding:9px 16px;
+border-radius:30px;
+background:#15231a;
+color:#a9b7ae;
+font-size:13px;
+}
+
+.bio{
+width:100%;
+height:70px;
+margin-top:28px;
+border-radius:18px;
+border:1px solid #304b39;
+background:#111d16;
+color:white;
+display:flex;
+align-items:center;
+text-align:left;
+padding:10px 17px;
+cursor:pointer;
+}
+
+.bio:hover{
+border-color:#3de394;
+}
+
+.face{
+width:48px;
+height:48px;
+border-radius:14px;
+background:#173c27;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:25px;
+color:#42df91;
+}
+
+.bioText{
+flex:1;
+padding-left:13px;
+}
+
+.bioText b{
+display:block;
+font-size:14px;
+}
+
+.bioText small{
+color:#68766e;
+font-size:11px;
+}
+
+.arrow{
+font-size:27px;
+color:#68766e;
+}
+
+.or{
+display:flex;
+align-items:center;
+gap:12px;
+margin:25px 0;
+color:#59655e;
+font-size:11px;
+}
+
+.or div{
+height:1px;
+background:#233028;
+flex:1;
+}
+
+.pinTitle{
+color:#8a968f;
+font-size:14px;
+}
+
+.dots{
+display:flex;
+justify-content:center;
+gap:15px;
+margin:15px 0 22px;
+}
+
+.dot{
+width:14px;
+height:14px;
+border:2px solid #526159;
+border-radius:50%;
+}
+
+.dot.on{
+background:#40df91;
+border-color:#40df91;
+box-shadow:0 0 12px rgba(64,223,145,.35);
+}
+
+.pad{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+max-width:390px;
+margin:auto;
+}
+
+.pad button{
+height:68px;
+border-radius:18px;
+border:1px solid #23332a;
+background:#101912;
+color:white;
+font-size:22px;
+cursor:pointer;
+}
+
+.pad button:active{
+transform:scale(.94);
+background:#193021;
+border-color:#3cdb8c;
+}
+
+.delete{
+font-size:22px!important;
+}
+
+.empty{
+visibility:hidden;
+}
+
+#error{
+height:20px;
+margin-top:10px;
+font-size:13px;
+color:#ed7272;
+}
+
+.protected{
+margin-top:20px;
+font-size:12px;
+color:#59665e;
+}
+
+
+/* DASHBOARD */
+
+#app{
+display:none;
+min-height:100vh;
+padding:30px;
+padding-bottom:110px;
+max-width:1200px;
+margin:auto;
+}
+
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:30px;
+}
+
+.top h2{
+font-size:36px;
+}
+
+.top p{
+color:#718078;
+margin-top:5px;
+}
+
+.add{
+width:55px;
+height:55px;
+border:0;
+border-radius:17px;
+background:#40df91;
+font-size:32px;
+cursor:pointer;
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px;
+}
+
+.card{
+background:#101812;
+border:1px solid #1d2b23;
+border-radius:21px;
+padding:22px;
+min-height:135px;
+}
+
+.card span{
+color:#718078;
+font-size:13px;
+}
+
+.card strong{
+display:block;
+font-size:28px;
+margin-top:15px;
+}
+
+.search{
+height:58px;
+margin-top:22px;
+background:#101812;
+border:1px solid #1d2b23;
+border-radius:16px;
+display:flex;
+align-items:center;
+padding:0 18px;
+}
+
+.search input{
+width:100%;
+border:0;
+outline:0;
+background:transparent;
+color:white;
+font-size:16px;
+}
+
+.emptyState{
+margin-top:20px;
+min-height:400px;
+background:#0c130f;
+border:1px solid #1a2920;
+border-radius:24px;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+text-align:center;
+}
+
+.emptyState .big{
+font-size:55px;
+margin-bottom:15px;
+}
+
+.emptyState p{
+color:#6f7c74;
+margin:8px 0 20px;
+}
+
+.addKey{
+padding:14px 22px;
+border:0;
+border-radius:13px;
+background:#40df91;
+font-weight:bold;
+cursor:pointer;
+}
+
+.lock{
+position:fixed;
+right:20px;
+top:20px;
+padding:11px 16px;
+border-radius:12px;
+border:1px solid #304036;
+background:#101812;
+color:#9ba69f;
+cursor:pointer;
+}
+
+.nav{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+height:75px;
+background:#090e0b;
+border-top:1px solid #1b2921;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:100px;
+}
+
+.nav div{
+color:#59655e;
+text-align:center;
+font-size:12px;
+}
+
+.nav .active{
+color:#40df91;
+}
+
+@media(max-width:700px){
+
+.lockBox{
+padding:35px 20px 25px;
+}
+
+.logo{
+width:80px;
+height:80px;
+font-size:40px;
+}
+
+h1{
+font-size:31px;
+}
+
+.pad button{
+height:64px;
+}
+
+.stats{
+grid-template-columns:repeat(2,1fr);
+}
+
+#app{
+padding:20px;
+}
+
+.nav{
+gap:60px;
+}
+
+}
+</style>
 </head>
 
 <body>
 
-<!-- ================= LOCK SCREEN ================= -->
+<!-- LOCK SCREEN -->
 
-<div id="lockScreen" class="lock-screen">
+<div id="lockScreen">
 
-  <div class="lock-card">
+<div class="lockBox">
 
-    <div class="lock-logo">🔐</div>
+<div class="logo">🔐</div>
 
-    <h1>KeyVault</h1>
+<h1>KeyVault</h1>
 
-    <p class="subtitle">
-      Your secure API key vault
-    </p>
+<p class="subtitle">Your secure API key vault</p>
 
-    <div class="locked-status">
-      <span></span>
-      Vault Locked
-    </div>
+<div class="status">● Vault Locked</div>
 
-    <button class="biometric-button" onclick="biometricUnlock()">
-      <div class="bio-icon">◉</div>
+<button class="bio" onclick="biometric()">
 
-      <div class="bio-text">
-        <strong>Unlock with Face ID</strong>
-        <small>Face ID / Fingerprint</small>
-      </div>
+<div class="face">◉</div>
 
-      <div class="bio-arrow">›</div>
-    </button>
+<div class="bioText">
+<b>Unlock with Face ID</b>
+<small>Face ID / Fingerprint</small>
+</div>
 
-    <div class="or">
-      <span></span>
-      OR
-      <span></span>
-    </div>
+<div class="arrow">›</div>
 
-    <p class="pin-title">
-      Enter your PIN
-    </p>
+</button>
 
-    <div id="pinDots" class="pin-dots">
-      <i></i>
-      <i></i>
-      <i></i>
-      <i></i>
-    </div>
+<div class="or">
+<div></div>
+OR
+<div></div>
+</div>
 
-    <div class="number-pad">
+<p class="pinTitle">Enter your PIN</p>
 
-      <button onclick="addNumber('1')">1</button>
-      <button onclick="addNumber('2')">2</button>
-      <button onclick="addNumber('3')">3</button>
+<div class="dots">
 
-      <button onclick="addNumber('4')">4</button>
-      <button onclick="addNumber('5')">5</button>
-      <button onclick="addNumber('6')">6</button>
+<div class="dot" id="d1"></div>
+<div class="dot" id="d2"></div>
+<div class="dot" id="d3"></div>
+<div class="dot" id="d4"></div>
 
-      <button onclick="addNumber('7')">7</button>
-      <button onclick="addNumber('8')">8</button>
-      <button onclick="addNumber('9')">9</button>
+</div>
 
-      <button class="empty"></button>
-      <button onclick="addNumber('0')">0</button>
-      <button onclick="removeNumber()">⌫</button>
+<div class="pad">
 
-    </div>
+<button onclick="press('1')">1</button>
+<button onclick="press('2')">2</button>
+<button onclick="press('3')">3</button>
 
-    <p id="pinError" class="pin-error"></p>
+<button onclick="press('4')">4</button>
+<button onclick="press('5')">5</button>
+<button onclick="press('6')">6</button>
 
-    <p class="protected">
-      🛡 Protected on this device
-    </p>
+<button onclick="press('7')">7</button>
+<button onclick="press('8')">8</button>
+<button onclick="press('9')">9</button>
 
-  </div>
+<button class="empty"></button>
+<button onclick="press('0')">0</button>
+<button class="delete" onclick="back()">⌫</button>
+
+</div>
+
+<div id="error"></div>
+
+<p class="protected">🛡 Protected on this device</p>
+
+</div>
 
 </div>
 
 
-<!-- ================= MAIN APP ================= -->
+<!-- APP -->
 
-<div id="mainApp" class="main-app hidden">
+<div id="app">
 
-  <div class="app">
+<button class="lock" onclick="lock()">🔒 Lock</button>
 
-    <header class="header">
+<div class="top">
 
-      <div>
-        <h1>KeyVault</h1>
-        <p>Secure API Key Manager</p>
-      </div>
+<div>
+<h2>Keys</h2>
+<p>Secure API Key Manager</p>
+</div>
 
-      <button class="add-button" onclick="openModal()">
-        +
-      </button>
+<button class="add">+</button>
 
-    </header>
+</div>
 
+<div class="stats">
 
-    <!-- STATS -->
+<div class="card">
+<span>🔑 Total Keys</span>
+<strong>0</strong>
+</div>
 
-    <section class="stats">
+<div class="card">
+<span>✓ Valid Keys</span>
+<strong>0</strong>
+</div>
 
-      <div class="stat-card">
+<div class="card">
+<span>⚠ Needs Check</span>
+<strong>0</strong>
+</div>
 
-        <div class="stat-icon">🔑</div>
+<div class="card">
+<span>💰 Estimated Cost</span>
+<strong>$0.00</strong>
+</div>
 
-        <p>Total Keys</p>
+</div>
 
-        <h2 id="totalKeys">0</h2>
+<div class="search">
+<input placeholder="⌕  Search keys, providers, notes">
+</div>
 
-      </div>
+<div class="emptyState">
 
+<div class="big">🔑</div>
 
-      <div class="stat-card">
+<h2>No API Keys Yet</h2>
 
-        <div class="stat-icon green">✓</div>
+<p>Add your first API key to start managing your providers.</p>
 
-        <p>Valid Keys</p>
+<button class="addKey">+ Add API Key</button>
 
-        <h2 id="validKeys">0</h2>
-
-      </div>
-
-
-      <div class="stat-card">
-
-        <div class="stat-icon yellow">⚠</div>
-
-        <p>Needs Check</p>
-
-        <h2 id="checkKeys">0</h2>
-
-      </div>
-
-
-      <div class="stat-card">
-
-        <div class="stat-icon blue">💰</div>
-
-        <p>Estimated Cost</p>
-
-        <h2>$0.00</h2>
-
-      </div>
-
-    </section>
-
-
-    <!-- SEARCH -->
-
-    <div class="search-box">
-
-      <span>⌕</span>
-
-      <input
-        id="searchInput"
-        type="text"
-        placeholder="Search keys, providers..."
-        oninput="searchKeys()"
-      >
-
-    </div>
-
-
-    <!-- FILTERS -->
-
-    <div class="filters">
-
-      <button class="filter active"
-        onclick="filterKeys('all', this)">
-        All
-      </button>
-
-      <button class="filter"
-        onclick="filterKeys('valid', this)">
-        Valid
-      </button>
-
-      <button class="filter"
-        onclick="filterKeys('check', this)">
-        Needs Check
-      </button>
-
-      <button class="filter"
-        onclick="filterKeys('invalid', this)">
-        Invalid
-      </button>
-
-    </div>
-
-
-    <!-- KEY AREA -->
-
-    <main id="keysContainer">
-
-      <div class="empty-state">
-
-        <div class="empty-icon">
-          🔑
-        </div>
-
-        <h2>No API Keys Yet</h2>
-
-        <p>
-          Add your first API key to start
-          managing your providers.
-        </p>
-
-        <button class="primary-button"
-          onclick="openModal()">
-          + Add API Key
-        </button>
-
-      </div>
-
-    </main>
-
-  </div>
-
-
-  <!-- LOCK -->
-
-  <button class="lock-button" onclick="lockVault()">
-    🔒 Lock
-  </button>
-
-
-  <!-- NAV -->
-
-  <nav class="bottom-nav">
-
-    <button class="nav active">
-      <span>🔑</span>
-      <small>Keys</small>
-    </button>
-
-    <button class="nav">
-      <span>📊</span>
-      <small>Usage</small>
-    </button>
-
-    <button class="nav">
-      <span>⚙️</span>
-      <small>Settings</small>
-    </button>
-
-  </nav>
+</div>
 
 </div>
 
 
-<!-- ================= ADD KEY ================= -->
+<div class="nav">
 
-<div id="modal" class="modal-background">
+<div class="active">
+🔑<br>
+Keys
+</div>
 
-  <div class="modal">
+<div>
+📊<br>
+Usage
+</div>
 
-    <div class="modal-header">
-
-      <div class="modal-icon">
-        🔐
-      </div>
-
-      <button class="close" onclick="closeModal()">
-        ×
-      </button>
-
-    </div>
-
-    <h2>Add API Key</h2>
-
-    <p class="modal-subtitle">
-      Add a provider key to your secure vault.
-    </p>
-
-
-    <label>KEY NAME</label>
-
-    <input
-      id="keyName"
-      class="input"
-      type="text"
-      placeholder="e.g. My Production Key"
-    >
-
-
-    <label>PROVIDER</label>
-
-    <select id="provider" class="input">
-
-      <option>OpenAI</option>
-      <option>Gemini</option>
-      <option>Anthropic</option>
-      <option>DeepSeek</option>
-      <option>OpenRouter</option>
-      <option>Custom</option>
-
-    </select>
-
-
-    <label>API KEY</label>
-
-    <div class="api-input">
-
-      <input
-        id="apiKey"
-        type="password"
-        placeholder="Paste your API key"
-      >
-
-      <button onclick="toggleKey()">👁</button>
-
-    </div>
-
-
-    <div class="security-box">
-
-      <span>🛡️</span>
-
-      <div>
-
-        <strong>Protected locally</strong>
-
-        <p>
-          Your API key is kept masked in the interface.
-        </p>
-
-      </div>
-
-    </div>
-
-
-    <button class="save-button" onclick="saveKey()">
-      Save API Key
-    </button>
-
-    <button class="cancel-button" onclick="closeModal()">
-      Cancel
-    </button>
-
-  </div>
+<div>
+⚙️<br>
+Settings
+</div>
 
 </div>
 
 
-<script src="script.js"></script>
+<script>
+
+let pin = "";
+
+const correctPin = "7890";
+
+
+function press(number){
+
+if(pin.length >= 4){
+return;
+}
+
+pin += number;
+
+updateDots();
+
+if(pin.length === 4){
+
+setTimeout(function(){
+
+if(pin === correctPin){
+
+unlock();
+
+}else{
+
+document.getElementById("error").innerText =
+"Incorrect PIN";
+
+pin = "";
+
+updateDots();
+
+setTimeout(function(){
+
+document.getElementById("error").innerText = "";
+
+},1200);
+
+}
+
+},150);
+
+}
+
+}
+
+
+function back(){
+
+pin = pin.slice(0,-1);
+
+updateDots();
+
+}
+
+
+function updateDots(){
+
+for(let i=1;i<=4;i++){
+
+document
+.getElementById("d"+i)
+.classList.toggle(
+"on",
+i <= pin.length
+);
+
+}
+
+}
+
+
+function unlock(){
+
+document.getElementById("lockScreen").style.display="none";
+
+document.getElementById("app").style.display="block";
+
+pin="";
+
+updateDots();
+
+}
+
+
+function lock(){
+
+document.getElementById("app").style.display="none";
+
+document.getElementById("lockScreen").style.display="flex";
+
+}
+
+
+function biometric(){
+
+alert(
+"Face ID / Fingerprint will be connected after the PIN system is working."
+);
+
+}
+
+</script>
 
 </body>
 </html>
