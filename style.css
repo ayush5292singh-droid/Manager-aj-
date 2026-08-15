@@ -701,3 +701,178 @@ select {
   }
 
 }
+/* =========================
+   LOCK SCREEN
+========================= */
+
+.lock-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    radial-gradient(
+      circle at center,
+      #14271c 0%,
+      #070b08 45%,
+      #030504 100%
+    );
+
+  padding: 25px;
+}
+
+.lock-screen.hidden {
+  display: none;
+}
+
+.lock-box {
+  width: 100%;
+  max-width: 470px;
+
+  padding: 45px 35px;
+
+  text-align: center;
+
+  background: rgba(15, 23, 18, .92);
+
+  border: 1px solid #294033;
+
+  border-radius: 30px;
+
+  box-shadow:
+    0 30px 100px rgba(0,0,0,.65);
+
+  backdrop-filter: blur(20px);
+}
+
+.lock-icon {
+  width: 90px;
+  height: 90px;
+
+  margin: 0 auto 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 28px;
+
+  background: #173b28;
+
+  font-size: 42px;
+
+  box-shadow:
+    0 15px 45px rgba(57,220,139,.12);
+}
+
+.lock-box h1 {
+  font-size: 32px;
+}
+
+.lock-box > p {
+  color: #77827b;
+  margin-top: 8px;
+}
+
+.pin-input {
+  width: 100%;
+  height: 60px;
+
+  margin-top: 30px;
+
+  border: 1px solid #2a3b30;
+
+  border-radius: 14px;
+
+  background: #080d0a;
+
+  color: white;
+
+  text-align: center;
+
+  font-size: 25px;
+
+  letter-spacing: 8px;
+
+  outline: none;
+}
+
+.pin-input:focus {
+  border-color: #39dc8b;
+}
+
+.unlock-btn {
+  width: 100%;
+  height: 58px;
+
+  margin-top: 15px;
+
+  border: none;
+  border-radius: 14px;
+
+  background: #39dc8b;
+
+  color: #041109;
+
+  font-size: 16px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.pin-message {
+  min-height: 20px;
+  color: #ed7777 !important;
+  font-size: 13px;
+}
+
+
+/* LOCK BUTTON */
+
+.vault-lock-btn {
+  position: fixed;
+
+  top: 25px;
+  right: 25px;
+
+  z-index: 600;
+
+  border: 1px solid #293a30;
+
+  background: #101712;
+
+  color: #9ca8a1;
+
+  padding: 10px 15px;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+}
+
+@media(max-width:700px) {
+
+  .lock-box {
+    padding: 35px 22px;
+  }
+
+  .lock-icon {
+    width: 75px;
+    height: 75px;
+    font-size: 34px;
+  }
+
+  .lock-box h1 {
+    font-size: 28px;
+  }
+
+  .vault-lock-btn {
+    top: 15px;
+    right: 15px;
+  }
+
+}
