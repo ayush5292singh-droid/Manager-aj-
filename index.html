@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>KeyVault</title>
 
 <style>
+
 *{
 box-sizing:border-box;
 margin:0;
@@ -13,657 +15,785 @@ padding:0;
 }
 
 body{
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-background:#030604;
+font-family:Arial, sans-serif;
+background:#050807;
 color:white;
 min-height:100vh;
 }
 
-button{
-font-family:inherit;
--webkit-tap-highlight-color:transparent;
-}
-
-/* LOCK */
+/* LOCK SCREEN */
 
 #lockScreen{
 min-height:100vh;
+
 display:flex;
-justify-content:center;
 align-items:center;
-padding:25px;
+justify-content:center;
+
+padding:20px;
+
 background:
-radial-gradient(circle at 50% 15%,#173d29 0,#08110b 38%,#030604 75%);
+radial-gradient(
+circle at top,
+#173c29,
+#07100b 45%,
+#030504
+);
 }
 
 .lockBox{
+
 width:100%;
-max-width:560px;
-padding:45px 38px 35px;
-background:#0c1510;
-border:1px solid #263d2f;
-border-radius:32px;
+max-width:500px;
+
+padding:45px 30px;
+
+background:#0d1611;
+
+border:1px solid #294033;
+
+border-radius:30px;
+
 text-align:center;
-box-shadow:0 30px 100px rgba(0,0,0,.7);
+
+box-shadow:
+0 30px 100px rgba(0,0,0,.7);
 }
 
 .logo{
-width:95px;
-height:95px;
+
+width:90px;
+height:90px;
+
 margin:auto;
-border-radius:28px;
-background:#153a26;
+
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:48px;
-box-shadow:0 0 40px rgba(40,220,130,.12);
+
+border-radius:25px;
+
+background:#173b28;
+
+font-size:45px;
 }
 
 h1{
-font-size:38px;
-margin-top:22px;
+
+font-size:36px;
+
+margin-top:20px;
 }
 
 .subtitle{
-color:#78857d;
-font-size:16px;
-margin-top:6px;
+
+color:#77837c;
+
+margin-top:7px;
 }
 
-.status{
+.locked{
+
 display:inline-block;
+
 margin-top:20px;
+
 padding:9px 16px;
-border-radius:30px;
-background:#15231a;
-color:#a9b7ae;
+
+border-radius:20px;
+
+background:#142219;
+
+color:#a7b3ac;
+
 font-size:13px;
 }
 
-.bio{
+.passwordTitle{
+
+margin-top:35px;
+
+color:#9aa59f;
+
+font-size:14px;
+}
+
+.password{
+
 width:100%;
-height:70px;
-margin-top:28px;
-border-radius:18px;
-border:1px solid #304b39;
-background:#111d16;
+
+height:60px;
+
+margin-top:12px;
+
+padding:0 18px;
+
+border-radius:15px;
+
+border:1px solid #304437;
+
+outline:none;
+
+background:#080d0a;
+
 color:white;
-display:flex;
-align-items:center;
-text-align:left;
-padding:10px 17px;
-cursor:pointer;
+
+font-size:20px;
+
+text-align:center;
+
+letter-spacing:4px;
 }
 
-.bio:hover{
-border-color:#3de394;
-}
+.password:focus{
 
-.face{
-width:48px;
-height:48px;
-border-radius:14px;
-background:#173c27;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:25px;
-color:#42df91;
-}
-
-.bioText{
-flex:1;
-padding-left:13px;
-}
-
-.bioText b{
-display:block;
-font-size:14px;
-}
-
-.bioText small{
-color:#68766e;
-font-size:11px;
-}
-
-.arrow{
-font-size:27px;
-color:#68766e;
-}
-
-.or{
-display:flex;
-align-items:center;
-gap:12px;
-margin:25px 0;
-color:#59655e;
-font-size:11px;
-}
-
-.or div{
-height:1px;
-background:#233028;
-flex:1;
-}
-
-.pinTitle{
-color:#8a968f;
-font-size:14px;
-}
-
-.dots{
-display:flex;
-justify-content:center;
-gap:15px;
-margin:15px 0 22px;
-}
-
-.dot{
-width:14px;
-height:14px;
-border:2px solid #526159;
-border-radius:50%;
-}
-
-.dot.on{
-background:#40df91;
 border-color:#40df91;
-box-shadow:0 0 12px rgba(64,223,145,.35);
+
+box-shadow:
+0 0 0 3px rgba(64,223,145,.08);
 }
 
-.pad{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:12px;
-max-width:390px;
-margin:auto;
-}
+.unlock{
 
-.pad button{
-height:68px;
-border-radius:18px;
-border:1px solid #23332a;
-background:#101912;
-color:white;
-font-size:22px;
+width:100%;
+
+height:60px;
+
+margin-top:18px;
+
+border:none;
+
+border-radius:15px;
+
+background:#40df91;
+
+color:#041109;
+
+font-size:16px;
+
+font-weight:bold;
+
 cursor:pointer;
 }
 
-.pad button:active{
-transform:scale(.94);
-background:#193021;
-border-color:#3cdb8c;
-}
+.unlock:active{
 
-.delete{
-font-size:22px!important;
-}
-
-.empty{
-visibility:hidden;
+transform:scale(.98);
 }
 
 #error{
+
 height:20px;
-margin-top:10px;
+
+margin-top:12px;
+
+color:#ef7474;
+
 font-size:13px;
-color:#ed7272;
 }
 
 .protected{
-margin-top:20px;
-font-size:12px;
+
+margin-top:25px;
+
 color:#59665e;
+
+font-size:12px;
 }
 
 
-/* DASHBOARD */
+/* APP */
 
 #app{
+
 display:none;
+
 min-height:100vh;
+
 padding:30px;
-padding-bottom:110px;
+
+padding-bottom:100px;
+
 max-width:1200px;
+
 margin:auto;
 }
 
-.top{
+.header{
+
 display:flex;
-justify-content:space-between;
+
 align-items:center;
+
+justify-content:space-between;
+
 margin-bottom:30px;
 }
 
-.top h2{
+.header h2{
+
 font-size:36px;
 }
 
-.top p{
+.header p{
+
+margin-top:6px;
+
 color:#718078;
-margin-top:5px;
 }
 
 .add{
+
 width:55px;
 height:55px;
-border:0;
+
+border:none;
+
 border-radius:17px;
+
 background:#40df91;
-font-size:32px;
+
+font-size:30px;
+
 cursor:pointer;
 }
 
+
+/* STATS */
+
 .stats{
+
 display:grid;
-grid-template-columns:repeat(4,1fr);
+
+grid-template-columns:
+repeat(4,1fr);
+
 gap:15px;
 }
 
 .card{
-background:#101812;
-border:1px solid #1d2b23;
-border-radius:21px;
+
 padding:22px;
+
 min-height:135px;
+
+background:#101812;
+
+border:1px solid #1d2b23;
+
+border-radius:20px;
 }
 
-.card span{
+.card p{
+
 color:#718078;
+
 font-size:13px;
 }
 
-.card strong{
-display:block;
+.card h3{
+
 font-size:28px;
+
 margin-top:15px;
 }
 
+
+/* SEARCH */
+
 .search{
+
 height:58px;
+
 margin-top:22px;
-background:#101812;
-border:1px solid #1d2b23;
-border-radius:16px;
-display:flex;
-align-items:center;
+
 padding:0 18px;
+
+display:flex;
+
+align-items:center;
+
+background:#101812;
+
+border:1px solid #1d2b23;
+
+border-radius:16px;
 }
 
 .search input{
+
 width:100%;
-border:0;
-outline:0;
+
+border:none;
+
+outline:none;
+
 background:transparent;
+
 color:white;
-font-size:16px;
+
+font-size:15px;
 }
 
-.emptyState{
+
+/* EMPTY */
+
+.empty{
+
 margin-top:20px;
+
 min-height:400px;
-background:#0c130f;
-border:1px solid #1a2920;
-border-radius:24px;
+
 display:flex;
-align-items:center;
-justify-content:center;
+
 flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
 text-align:center;
+
+background:#0c130f;
+
+border:1px solid #1a2920;
+
+border-radius:24px;
 }
 
-.emptyState .big{
+.emptyIcon{
+
 font-size:55px;
+
 margin-bottom:15px;
 }
 
-.emptyState p{
-color:#6f7c74;
-margin:8px 0 20px;
+.empty p{
+
+margin-top:8px;
+
+color:#718078;
 }
 
-.addKey{
-padding:14px 22px;
-border:0;
-border-radius:13px;
-background:#40df91;
-font-weight:bold;
-cursor:pointer;
-}
 
-.lock{
-position:fixed;
-right:20px;
-top:20px;
-padding:11px 16px;
-border-radius:12px;
-border:1px solid #304036;
-background:#101812;
-color:#9ba69f;
-cursor:pointer;
-}
+/* BOTTOM NAV */
 
 .nav{
+
 position:fixed;
-bottom:0;
+
 left:0;
 right:0;
-height:75px;
-background:#090e0b;
-border-top:1px solid #1b2921;
+bottom:0;
+
+height:70px;
+
 display:flex;
+
 justify-content:center;
+
 align-items:center;
+
 gap:100px;
+
+background:#090e0b;
+
+border-top:1px solid #1b2921;
 }
 
 .nav div{
-color:#59655e;
+
 text-align:center;
+
 font-size:12px;
+
+color:#657069;
 }
 
 .nav .active{
+
 color:#40df91;
 }
+
+
+/* LOCK BUTTON */
+
+.lock{
+
+position:fixed;
+
+top:20px;
+right:20px;
+
+padding:10px 15px;
+
+border-radius:12px;
+
+border:1px solid #304036;
+
+background:#101812;
+
+color:#a0aaa4;
+
+cursor:pointer;
+}
+
+
+/* MOBILE */
 
 @media(max-width:700px){
 
 .lockBox{
-padding:35px 20px 25px;
-}
 
-.logo{
-width:80px;
-height:80px;
-font-size:40px;
+padding:40px 22px;
 }
 
 h1{
-font-size:31px;
-}
 
-.pad button{
-height:64px;
+font-size:30px;
 }
 
 .stats{
-grid-template-columns:repeat(2,1fr);
+
+grid-template-columns:
+repeat(2,1fr);
 }
 
 #app{
+
 padding:20px;
+
+padding-bottom:90px;
 }
 
 .nav{
-gap:60px;
+
+gap:55px;
 }
 
 }
+
 </style>
 </head>
 
+
 <body>
 
-<!-- LOCK SCREEN -->
+
+<!-- ================= LOCK SCREEN ================= -->
 
 <div id="lockScreen">
 
 <div class="lockBox">
 
-<div class="logo">🔐</div>
-
-<h1>KeyVault</h1>
-
-<p class="subtitle">Your secure API key vault</p>
-
-<div class="status">● Vault Locked</div>
-
-<button class="bio" onclick="biometric()">
-
-<div class="face">◉</div>
-
-<div class="bioText">
-<b>Unlock with Face ID</b>
-<small>Face ID / Fingerprint</small>
+<div class="logo">
+🔐
 </div>
 
-<div class="arrow">›</div>
+<h1>
+KeyVault
+</h1>
+
+<p class="subtitle">
+Your secure API key vault
+</p>
+
+<div class="locked">
+🔒 Vault Locked
+</div>
+
+
+<p class="passwordTitle">
+Enter your password
+</p>
+
+
+<input
+id="password"
+class="password"
+type="password"
+placeholder="Enter password"
+autocomplete="off"
+>
+
+
+<button
+class="unlock"
+onclick="unlockVault()"
+>
+
+Unlock Vault
 
 </button>
 
-<div class="or">
-<div></div>
-OR
-<div></div>
-</div>
-
-<p class="pinTitle">Enter your PIN</p>
-
-<div class="dots">
-
-<div class="dot" id="d1"></div>
-<div class="dot" id="d2"></div>
-<div class="dot" id="d3"></div>
-<div class="dot" id="d4"></div>
-
-</div>
-
-<div class="pad">
-
-<button onclick="press('1')">1</button>
-<button onclick="press('2')">2</button>
-<button onclick="press('3')">3</button>
-
-<button onclick="press('4')">4</button>
-<button onclick="press('5')">5</button>
-<button onclick="press('6')">6</button>
-
-<button onclick="press('7')">7</button>
-<button onclick="press('8')">8</button>
-<button onclick="press('9')">9</button>
-
-<button class="empty"></button>
-<button onclick="press('0')">0</button>
-<button class="delete" onclick="back()">⌫</button>
-
-</div>
 
 <div id="error"></div>
 
-<p class="protected">🛡 Protected on this device</p>
+
+<p class="protected">
+🛡 Protected on this device
+</p>
 
 </div>
 
 </div>
 
 
-<!-- APP -->
+
+<!-- ================= MAIN APP ================= -->
 
 <div id="app">
 
-<button class="lock" onclick="lock()">🔒 Lock</button>
 
-<div class="top">
+<button
+class="lock"
+onclick="lockVault()"
+>
+
+🔒 Lock
+
+</button>
+
+
+<div class="header">
 
 <div>
-<h2>Keys</h2>
-<p>Secure API Key Manager</p>
+
+<h2>
+Keys
+</h2>
+
+<p>
+Secure API Key Manager
+</p>
+
 </div>
 
-<button class="add">+</button>
+
+<button class="add">
++
+</button>
 
 </div>
+
+
 
 <div class="stats">
 
-<div class="card">
-<span>🔑 Total Keys</span>
-<strong>0</strong>
-</div>
 
 <div class="card">
-<span>✓ Valid Keys</span>
-<strong>0</strong>
+
+<p>
+🔑 Total Keys
+</p>
+
+<h3>
+0
+</h3>
+
 </div>
+
 
 <div class="card">
-<span>⚠ Needs Check</span>
-<strong>0</strong>
+
+<p>
+✓ Valid Keys
+</p>
+
+<h3>
+0
+</h3>
+
 </div>
+
 
 <div class="card">
-<span>💰 Estimated Cost</span>
-<strong>$0.00</strong>
-</div>
+
+<p>
+⚠ Needs Check
+</p>
+
+<h3>
+0
+</h3>
 
 </div>
+
+
+<div class="card">
+
+<p>
+💰 Estimated Cost
+</p>
+
+<h3>
+$0.00
+</h3>
+
+</div>
+
+
+</div>
+
+
 
 <div class="search">
-<input placeholder="⌕  Search keys, providers, notes">
-</div>
 
-<div class="emptyState">
-
-<div class="big">🔑</div>
-
-<h2>No API Keys Yet</h2>
-
-<p>Add your first API key to start managing your providers.</p>
-
-<button class="addKey">+ Add API Key</button>
+<input
+type="text"
+placeholder="⌕  Search keys, providers, notes"
+>
 
 </div>
 
+
+
+<div class="empty">
+
+<div class="emptyIcon">
+🔑
 </div>
 
+<h2>
+No API Keys Yet
+</h2>
+
+<p>
+Add your first API key to start managing your providers.
+</p>
+
+</div>
+
+
+</div>
+
+
+
+<!-- NAV -->
 
 <div class="nav">
 
 <div class="active">
-🔑<br>
+
+🔑
+<br>
 Keys
+
 </div>
 
+
 <div>
-📊<br>
+
+📊
+<br>
 Usage
+
 </div>
+
 
 <div>
-⚙️<br>
+
+⚙️
+<br>
 Settings
+
 </div>
 
 </div>
+
 
 
 <script>
 
-let pin = "";
+/* =========================
+PASSWORD
+========================= */
 
-const correctPin = "7890";
+const PASSWORD = "7890";
 
 
-function press(number){
+function unlockVault(){
 
-if(pin.length >= 4){
-return;
-}
+const input =
+document.getElementById("password");
 
-pin += number;
+const error =
+document.getElementById("error");
 
-updateDots();
 
-if(pin.length === 4){
+if(input.value === PASSWORD){
 
-setTimeout(function(){
+/* OPEN APP */
 
-if(pin === correctPin){
+document.getElementById(
+"lockScreen"
+).style.display = "none";
 
-unlock();
+
+document.getElementById(
+"app"
+).style.display = "block";
+
+
+/* CLEAR PASSWORD */
+
+input.value = "";
+
+error.innerText = "";
 
 }else{
 
-document.getElementById("error").innerText =
-"Incorrect PIN";
+error.innerText =
+"Incorrect password";
 
-pin = "";
-
-updateDots();
-
-setTimeout(function(){
-
-document.getElementById("error").innerText = "";
-
-},1200);
-
-}
-
-},150);
+input.value = "";
 
 }
 
 }
 
 
-function back(){
+/* =========================
+LOCK AGAIN
+========================= */
 
-pin = pin.slice(0,-1);
+function lockVault(){
 
-updateDots();
+document.getElementById(
+"app"
+).style.display = "none";
 
-}
+
+document.getElementById(
+"lockScreen"
+).style.display = "flex";
 
 
-function updateDots(){
-
-for(let i=1;i<=4;i++){
-
-document
-.getElementById("d"+i)
-.classList.toggle(
-"on",
-i <= pin.length
-);
-
-}
+document.getElementById(
+"password"
+).value = "";
 
 }
 
 
-function unlock(){
+/* ENTER KEY ALSO UNLOCKS */
 
-document.getElementById("lockScreen").style.display="none";
+document.getElementById(
+"password"
+).addEventListener(
+"keydown",
+function(event){
 
-document.getElementById("app").style.display="block";
+if(event.key === "Enter"){
 
-pin="";
-
-updateDots();
-
-}
-
-
-function lock(){
-
-document.getElementById("app").style.display="none";
-
-document.getElementById("lockScreen").style.display="flex";
+unlockVault();
 
 }
 
-
-function biometric(){
-
-alert(
-"Face ID / Fingerprint will be connected after the PIN system is working."
-);
-
-}
+});
 
 </script>
+
 
 </body>
 </html>
