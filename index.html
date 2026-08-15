@@ -11,100 +11,132 @@
 
 <div class="app">
 
-  <header>
+  <!-- HEADER -->
+  <header class="header">
+
     <div>
       <h1>KeyVault</h1>
       <p>Secure API Key Manager</p>
     </div>
 
     <button class="add-btn" onclick="openModal()">+</button>
+
   </header>
 
-  <!-- Stats -->
+
+  <!-- STATS -->
+
   <section class="stats">
 
     <div class="card">
-      <span>🔑</span>
+      <div class="card-icon">🔑</div>
       <p>Total Keys</p>
       <h2 id="totalKeys">4</h2>
     </div>
 
     <div class="card">
-      <span>✓</span>
+      <div class="card-icon green">✓</div>
       <p>Valid Keys</p>
       <h2 id="validKeys">2</h2>
     </div>
 
     <div class="card">
-      <span>⚠</span>
+      <div class="card-icon yellow">⚠</div>
       <p>Needs Check</p>
       <h2 id="checkKeys">1</h2>
     </div>
 
     <div class="card">
-      <span>💰</span>
+      <div class="card-icon blue">💰</div>
       <p>Estimated Cost</p>
       <h2>$12.40</h2>
     </div>
 
   </section>
 
-  <!-- Search -->
+
+  <!-- SEARCH -->
+
   <div class="search">
-    🔍
+
+    <span>⌕</span>
+
     <input
       id="searchInput"
       type="text"
-      placeholder="Search keys or providers..."
+      placeholder="Search keys, providers..."
       oninput="searchKeys()"
     >
+
   </div>
 
-  <!-- Filters -->
+
+  <!-- FILTERS -->
+
   <div class="filters">
 
-    <button class="filter active" onclick="filterKeys('all', this)">
+    <button class="filter active"
+      onclick="filterKeys('all', this)">
       All
     </button>
 
-    <button class="filter" onclick="filterKeys('valid', this)">
+    <button class="filter"
+      onclick="filterKeys('valid', this)">
       Valid
     </button>
 
-    <button class="filter" onclick="filterKeys('check', this)">
+    <button class="filter"
+      onclick="filterKeys('check', this)">
       Needs Check
     </button>
 
-    <button class="filter" onclick="filterKeys('invalid', this)">
+    <button class="filter"
+      onclick="filterKeys('invalid', this)">
       Invalid
     </button>
 
   </div>
 
-  <!-- Keys -->
+
+  <!-- KEY LIST -->
+
   <main id="keysContainer">
 
     <div class="key-card" data-status="valid">
 
       <div class="provider">
-        <div class="provider-icon">O</div>
+
+        <div class="provider-icon openai">
+          O
+        </div>
 
         <div>
           <h3>OpenAI</h3>
           <p>Production</p>
         </div>
 
-        <span class="status valid">● Valid</span>
+        <span class="status valid">
+          ● Valid
+        </span>
+
       </div>
 
       <div class="key-value">
+
         <span>sk-••••••••••••9a2f</span>
-        <button onclick="copyKey('sk-demo-openai-9a2f')">Copy</button>
+
+        <button onclick="copyKey('demo-openai-9a2f')">
+          Copy
+        </button>
+
       </div>
 
       <div class="key-info">
+
         <span>Last checked: 2 min ago</span>
+
         <span>Balance: $18.42</span>
+
       </div>
 
     </div>
@@ -113,24 +145,38 @@
     <div class="key-card" data-status="valid">
 
       <div class="provider">
-        <div class="provider-icon gemini">G</div>
+
+        <div class="provider-icon gemini">
+          G
+        </div>
 
         <div>
           <h3>Gemini</h3>
           <p>Personal</p>
         </div>
 
-        <span class="status valid">● Valid</span>
+        <span class="status valid">
+          ● Valid
+        </span>
+
       </div>
 
       <div class="key-value">
+
         <span>AIza••••••••••••72kP</span>
-        <button onclick="copyKey('demo-gemini-72kP')">Copy</button>
+
+        <button onclick="copyKey('demo-gemini-72kP')">
+          Copy
+        </button>
+
       </div>
 
       <div class="key-info">
+
         <span>Last checked: 8 min ago</span>
+
         <span>Balance: Available</span>
+
       </div>
 
     </div>
@@ -139,50 +185,38 @@
     <div class="key-card" data-status="check">
 
       <div class="provider">
-        <div class="provider-icon anthropic">A</div>
+
+        <div class="provider-icon anthropic">
+          A
+        </div>
 
         <div>
           <h3>Anthropic</h3>
           <p>Testing</p>
         </div>
 
-        <span class="status check">● Needs Check</span>
+        <span class="status check">
+          ● Needs Check
+        </span>
+
       </div>
 
       <div class="key-value">
+
         <span>sk-ant-••••••••••3x9</span>
-        <button onclick="copyKey('demo-anthropic-3x9')">Copy</button>
+
+        <button onclick="copyKey('demo-anthropic-3x9')">
+          Copy
+        </button>
+
       </div>
 
       <div class="key-info">
+
         <span>Last checked: 2 days ago</span>
+
         <span>Balance: Unknown</span>
-      </div>
 
-    </div>
-
-
-    <div class="key-card" data-status="invalid">
-
-      <div class="provider">
-        <div class="provider-icon custom">C</div>
-
-        <div>
-          <h3>Custom Provider</h3>
-          <p>Old Project</p>
-        </div>
-
-        <span class="status invalid">● Invalid</span>
-      </div>
-
-      <div class="key-value">
-        <span>key-••••••••••••1f8</span>
-        <button onclick="copyKey('demo-custom-1f8')">Copy</button>
-      </div>
-
-      <div class="key-info">
-        <span>Last checked: 5 days ago</span>
-        <span>Balance: —</span>
       </div>
 
     </div>
@@ -191,84 +225,178 @@
 
 </div>
 
-<!-- Bottom navigation -->
 
-<nav class="bottom-nav">
-
-  <button class="nav-item active">
-    <span>🔑</span>
-    <small>Keys</small>
-  </button>
-
-  <button class="nav-item">
-    <span>📊</span>
-    <small>Usage</small>
-  </button>
-
-  <button class="nav-item">
-    <span>⚙️</span>
-    <small>Settings</small>
-  </button>
-
-</nav>
-<!-- ADD KEY MODAL -->
+<!-- ========================= -->
+<!-- ADD API KEY MODAL -->
+<!-- ========================= -->
 
 <div class="modal-overlay" id="addKeyModal">
 
   <div class="modal">
 
-    <div class="modal-header">
-      <div>
-        <h2>Add API Key</h2>
-        <p>Save a provider key to your vault.</p>
+    <div class="modal-top">
+
+      <div class="modal-icon">
+        🔐
       </div>
 
-      <button class="close-btn" onclick="closeModal()">×</button>
+      <button
+        class="close-btn"
+        onclick="closeModal()">
+        ×
+      </button>
+
     </div>
 
-    <label>Key Name</label>
+
+    <h2>Add API Key</h2>
+
+    <p class="modal-description">
+      Securely add a new API key to your KeyVault.
+    </p>
+
+
+    <!-- NAME -->
+
+    <label>KEY NAME</label>
 
     <input
       id="keyName"
       class="form-input"
       type="text"
-      placeholder="e.g. My OpenAI Key"
+      placeholder="e.g. My Production Key"
     >
 
-    <label>Provider</label>
 
-    <select id="provider" class="form-input">
+    <!-- PROVIDER -->
 
-      <option value="OpenAI">OpenAI</option>
-      <option value="Gemini">Gemini</option>
-      <option value="Anthropic">Anthropic</option>
-      <option value="DeepSeek">DeepSeek</option>
-      <option value="OpenRouter">OpenRouter</option>
-      <option value="Custom">Custom Provider</option>
+    <label>PROVIDER</label>
+
+    <select
+      id="provider"
+      class="form-input">
+
+      <option value="OpenAI">
+        OpenAI
+      </option>
+
+      <option value="Gemini">
+        Gemini
+      </option>
+
+      <option value="Anthropic">
+        Anthropic
+      </option>
+
+      <option value="DeepSeek">
+        DeepSeek
+      </option>
+
+      <option value="OpenRouter">
+        OpenRouter
+      </option>
+
+      <option value="Custom">
+        Custom Provider
+      </option>
 
     </select>
 
-    <label>API Key</label>
+
+    <!-- API KEY -->
+
+    <label>API KEY</label>
 
     <div class="key-input">
 
       <input
         id="apiKey"
         type="password"
-        placeholder="Enter API key"
+        placeholder="Paste your API key"
       >
 
-      <button onclick="toggleKey()">👁</button>
+      <button
+        id="eyeButton"
+        onclick="toggleKey()">
+        👁
+      </button>
 
     </div>
 
-    <button class="save-btn" onclick="saveKey()">
+
+    <!-- SECURITY INFO -->
+
+    <div class="security-box">
+
+      <span>🛡️</span>
+
+      <div>
+
+        <strong>Protected locally</strong>
+
+        <p>
+          Your key will be protected by
+          your device's secure storage.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- SAVE -->
+
+    <button
+      class="save-btn"
+      onclick="saveKey()">
+
+      <span>＋</span>
       Save API Key
+
+    </button>
+
+
+    <button
+      class="cancel-btn"
+      onclick="closeModal()">
+
+      Cancel
+
     </button>
 
   </div>
 
 </div>
+
+
+<!-- BOTTOM NAV -->
+
+<nav class="bottom-nav">
+
+  <button class="nav-item active">
+
+    <span>🔑</span>
+    <small>Keys</small>
+
+  </button>
+
+  <button class="nav-item">
+
+    <span>📊</span>
+    <small>Usage</small>
+
+  </button>
+
+  <button class="nav-item">
+
+    <span>⚙️</span>
+    <small>Settings</small>
+
+  </button>
+
+</nav>
+
+
 <script src="script.js"></script>
 
 </body>
