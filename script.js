@@ -1,5 +1,5 @@
 /* =========================
-   PIN
+   VAULT PIN
 ========================= */
 
 const CORRECT_PIN = "7890";
@@ -8,10 +8,10 @@ let enteredPIN = "";
 
 
 /* =========================
-   PIN NUMBER
+   ADD NUMBER
 ========================= */
 
-function pressNumber(number) {
+function addNumber(number) {
 
   if (enteredPIN.length >= 4) {
     return;
@@ -31,10 +31,10 @@ function pressNumber(number) {
 
 
 /* =========================
-   DELETE
+   DELETE NUMBER
 ========================= */
 
-function deleteNumber() {
+function removeNumber() {
 
   enteredPIN =
     enteredPIN.slice(0, -1);
@@ -45,32 +45,29 @@ function deleteNumber() {
 
 
 /* =========================
-   DOTS
+   UPDATE DOTS
 ========================= */
 
 function updateDots() {
 
   const dots =
     document.querySelectorAll(
-      "#pinDots span"
+      "#pinDots i"
     );
 
+  dots.forEach((dot, index) => {
 
-  dots.forEach(
-    (dot, index) => {
+    if (index < enteredPIN.length) {
 
-      if (index < enteredPIN.length) {
+      dot.classList.add("filled");
 
-        dot.classList.add("filled");
+    } else {
 
-      } else {
-
-        dot.classList.remove("filled");
-
-      }
+      dot.classList.remove("filled");
 
     }
-  );
+
+  });
 
 }
 
@@ -83,18 +80,18 @@ function checkPIN() {
 
   const error =
     document.getElementById(
-      "errorMessage"
+      "pinError"
     );
 
 
   if (enteredPIN === CORRECT_PIN) {
 
-    unlockApp();
+    unlockVault();
 
   } else {
 
     error.textContent =
-      "Incorrect PIN. Try again.";
+      "Incorrect PIN";
 
     enteredPIN = "";
 
@@ -104,7 +101,7 @@ function checkPIN() {
 
       error.textContent = "";
 
-    }, 1800);
+    }, 1500);
 
   }
 
@@ -115,17 +112,15 @@ function checkPIN() {
    UNLOCK
 ========================= */
 
-function unlockApp() {
+function unlockVault() {
 
   document
     .getElementById("lockScreen")
     .classList.add("hidden");
 
-
   document
     .getElementById("mainApp")
     .classList.remove("hidden");
-
 
   enteredPIN = "";
 
@@ -144,11 +139,9 @@ function lockVault() {
     .getElementById("mainApp")
     .classList.add("hidden");
 
-
   document
     .getElementById("lockScreen")
     .classList.remove("hidden");
-
 
   enteredPIN = "";
 
@@ -158,13 +151,13 @@ function lockVault() {
 
 
 /* =========================
-   BIOMETRIC PLACEHOLDER
+   BIOMETRIC
 ========================= */
 
 function biometricUnlock() {
 
   alert(
-    "Face ID / Fingerprint authentication will be connected in the biometric security part."
+    "Biometric unlock will be connected in the next security part."
   );
 
 }
@@ -177,7 +170,7 @@ function biometricUnlock() {
 function openModal() {
 
   document
-    .getElementById("addKeyModal")
+    .getElementById("modal")
     .classList.add("show");
 
 }
@@ -186,14 +179,14 @@ function openModal() {
 function closeModal() {
 
   document
-    .getElementById("addKeyModal")
+    .getElementById("modal")
     .classList.remove("show");
 
 }
 
 
 /* =========================
-   SHOW / HIDE KEY
+   SHOW / HIDE API KEY
 ========================= */
 
 function toggleKey() {
@@ -201,38 +194,47 @@ function toggleKey() {
   const input =
     document.getElementById("apiKey");
 
+  if (input.type === "password") {
 
-  input.type =
-    input.type === "password"
-      ? "text"
-      : "password";
+    input.type = "text";
+
+  } else {
+
+    input.type = "password";
+
+  }
 
 }
 
 
 /* =========================
-   SAVE DEMO KEY
+   SAVE API KEY
 ========================= */
 
 function saveKey() {
 
   const name =
-    document.getElementById("keyName")
-      .value.trim();
+    document
+      .getElementById("keyName")
+      .value
+      .trim();
 
   const provider =
-    document.getElementById("provider")
+    document
+      .getElementById("provider")
       .value;
 
-  const apiKey =
-    document.getElementById("apiKey")
-      .value.trim();
+  const key =
+    document
+      .getElementById("apiKey")
+      .value
+      .trim();
 
 
-  if (!name || !apiKey) {
+  if (name === "" || key === "") {
 
     alert(
-      "Please enter both a name and API key."
+      "Please enter the key name and API key."
     );
 
     return;
@@ -260,10 +262,17 @@ function saveKey() {
   const card =
     document.createElement("div");
 
-
   card.className = "key-card";
 
   card.dataset.status = "check";
+
+
+  const masked =
+    key.length > 8
+      ? key.substring(0, 4) +
+        "••••••••" +
+        key.substring(key.length - 4)
+      : "••••••••";
 
 
   card.style.cssText = `
@@ -273,14 +282,6 @@ function saveKey() {
     padding:22px;
     margin-bottom:15px;
   `;
-
-
-  const masked =
-    apiKey.length > 8
-      ? apiKey.slice(0,4) +
-        "••••••••" +
-        apiKey.slice(-4)
-      : "••••••••";
 
 
   card.innerHTML = `
@@ -308,14 +309,16 @@ function saveKey() {
 
       <div>
 
-        <h3>${escapeText(name)}</h3>
+        <h3>
+          ${escapeHTML(name)}
+        </h3>
 
         <p style="
           color:#707c75;
           font-size:13px;
           margin-top:4px;
         ">
-          ${escapeText(provider)}
+          ${escapeHTML(provider)}
         </p>
 
       </div>
@@ -340,13 +343,11 @@ function saveKey() {
       border:1px solid #19231d;
       border-radius:12px;
       padding:13px;
-      display:flex;
-      justify-content:space-between;
       font-family:monospace;
       color:#aab4ae;
     ">
 
-      <span>${masked}</span>
+      ${masked}
 
     </div>
 
@@ -356,15 +357,16 @@ function saveKey() {
   container.prepend(card);
 
 
+  document
+    .getElementById("keyName")
+    .value = "";
+
+  document
+    .getElementById("apiKey")
+    .value = "";
+
+
   closeModal();
-
-
-  document.getElementById("keyName")
-    .value = "";
-
-  document.getElementById("apiKey")
-    .value = "";
-
 
   updateStats();
 
@@ -407,19 +409,21 @@ function updateStats() {
 function searchKeys() {
 
   const search =
-    document.getElementById(
-      "searchInput"
-    ).value.toLowerCase();
+    document
+      .getElementById("searchInput")
+      .value
+      .toLowerCase();
 
 
   document
     .querySelectorAll(".key-card")
     .forEach(card => {
 
+      const text =
+        card.innerText.toLowerCase();
+
       card.style.display =
-        card.innerText
-          .toLowerCase()
-          .includes(search)
+        text.includes(search)
           ? "block"
           : "none";
 
@@ -471,23 +475,23 @@ function filterKeys(status, button) {
 
 
 /* =========================
-   SAFE TEXT
+   SECURITY
 ========================= */
 
-function escapeText(text) {
+function escapeHTML(text) {
 
   return text
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 
 }
 
 
 /* =========================
-   OUTSIDE MODAL
+   CLOSE MODAL OUTSIDE
 ========================= */
 
 document.addEventListener(
@@ -495,14 +499,10 @@ document.addEventListener(
   function(event) {
 
     const modal =
-      document.getElementById(
-        "addKeyModal"
-      );
+      document.getElementById("modal");
 
 
-    if (
-      event.target === modal
-    ) {
+    if (event.target === modal) {
 
       closeModal();
 
