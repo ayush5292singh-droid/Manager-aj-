@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KeyVault</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="app">
+
+    <!-- Header -->
+    <header>
+      <div>
+        <h1>KeyVault</h1>
+        <p>Secure API Key Manager</p>
+      </div>
+
+      <button class="add-btn" onclick="showMessage()">
+        +
+      </button>
+    </header>
+
+    <!-- Dashboard cards -->
+    <section class="stats">
+
+      <div class="card">
+        <span>🔑</span>
+        <p>Total Keys</p>
+        <h2>0</h2>
+      </div>
+
+      <div class="card">
+        <span>✓</span>
+        <p>Valid Keys</p>
+        <h2>0</h2>
+      </div>
+
+      <div class="card">
+        <span>⚠</span>
+        <p>Needs Check</p>
+        <h2>0</h2>
+      </div>
+
+      <div class="card">
+        <span>💰</span>
+        <p>Estimated Cost</p>
+        <h2>$0.00</h2>
+      </div>
+
+    </section>
+
+    <!-- Search -->
+    <div class="search">
+      🔍
+      <input
+        type="text"
+        placeholder="Search keys, providers, notes..."
+      >
+    </div>
+
+    <!-- Empty keys area -->
+    <section class="keys-area">
+      <div class="empty-icon">🔐</div>
+
+      <h2>No API Keys Yet</h2>
+
+      <p>
+        Add your first API key to start managing
+        your AI providers securely.
+      </p>
+
+      <button class="primary-btn" onclick="showMessage()">
+        + Add API Key
+      </button>
+    </section>
+
+    <!-- Bottom navigation -->
+    <nav class="bottom-nav">
+
+      <button class="nav-item active">
+        <span>🔑</span>
+        <small>Keys</small>
+      </button>
+
+      <button class="nav-item">
+        <span>📊</span>
+        <small>Usage</small>
+      </button>
+
+      <button class="nav-item">
+        <span>⚙️</span>
+        <small>Settings</small>
+      </button>
+
+    </nav>
+
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
