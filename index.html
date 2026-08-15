@@ -8,7 +8,36 @@
 </head>
 
 <body>
+<!-- LOCK SCREEN -->
 
+<div id="lockScreen" class="lock-screen">
+
+  <div class="lock-box">
+
+    <div class="lock-icon">🔐</div>
+
+    <h1>KeyVault</h1>
+
+    <p>Enter your PIN to unlock your vault.</p>
+
+    <input
+      id="pinInput"
+      class="pin-input"
+      type="password"
+      inputmode="numeric"
+      maxlength="6"
+      placeholder="••••"
+    >
+
+    <button class="unlock-btn" onclick="unlockVault()">
+      Unlock Vault
+    </button>
+
+    <p id="pinMessage" class="pin-message"></p>
+
+  </div>
+
+</div>
 <div class="app">
 
   <!-- HEADER -->
@@ -370,7 +399,11 @@
 
 
 <!-- BOTTOM NAV -->
-
+<button
+  class="vault-lock-btn"
+  onclick="lockVault()">
+  🔒 Lock Vault
+</button>
 <nav class="bottom-nav">
 
   <button class="nav-item active">
