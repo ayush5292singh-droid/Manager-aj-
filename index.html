@@ -10,92 +10,77 @@
 
 <body>
 
-<!-- =========================
-     LOCK SCREEN
-========================= -->
+<!-- ================= LOCK SCREEN ================= -->
 
 <div id="lockScreen" class="lock-screen">
 
   <div class="lock-card">
 
-    <div class="lock-logo">
-      🔐
-    </div>
+    <div class="lock-logo">🔐</div>
 
-    <div class="lock-title">
-      <h1>KeyVault</h1>
-      <p>Your secure API key vault</p>
-    </div>
+    <h1>KeyVault</h1>
 
-    <div class="security-status">
-      <span class="status-dot"></span>
+    <p class="subtitle">
+      Your secure API key vault
+    </p>
+
+    <div class="locked-status">
+      <span></span>
       Vault Locked
     </div>
 
-    <button
-      class="biometric-btn"
-      onclick="biometricUnlock()">
+    <button class="biometric-button" onclick="biometricUnlock()">
+      <div class="bio-icon">◉</div>
 
-      <span class="biometric-icon">◉</span>
-
-      <span>
+      <div class="bio-text">
         <strong>Unlock with Face ID</strong>
-        <small>Face ID / Touch ID</small>
-      </span>
+        <small>Face ID / Fingerprint</small>
+      </div>
 
-      <span class="arrow">›</span>
-
+      <div class="bio-arrow">›</div>
     </button>
 
-    <div class="divider">
-      <span>OR</span>
+    <div class="or">
+      <span></span>
+      OR
+      <span></span>
     </div>
 
-    <p class="pin-label">
+    <p class="pin-title">
       Enter your PIN
     </p>
 
-    <div class="pin-dots" id="pinDots">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
+    <div id="pinDots" class="pin-dots">
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
     </div>
-
-    <input
-      id="pinInput"
-      class="hidden-pin"
-      type="tel"
-      inputmode="numeric"
-      maxlength="4"
-      autocomplete="off"
-      aria-label="PIN"
-    >
 
     <div class="number-pad">
 
-      <button onclick="pressNumber('1')">1</button>
-      <button onclick="pressNumber('2')">2</button>
-      <button onclick="pressNumber('3')">3</button>
+      <button onclick="addNumber('1')">1</button>
+      <button onclick="addNumber('2')">2</button>
+      <button onclick="addNumber('3')">3</button>
 
-      <button onclick="pressNumber('4')">4</button>
-      <button onclick="pressNumber('5')">5</button>
-      <button onclick="pressNumber('6')">6</button>
+      <button onclick="addNumber('4')">4</button>
+      <button onclick="addNumber('5')">5</button>
+      <button onclick="addNumber('6')">6</button>
 
-      <button onclick="pressNumber('7')">7</button>
-      <button onclick="pressNumber('8')">8</button>
-      <button onclick="pressNumber('9')">9</button>
+      <button onclick="addNumber('7')">7</button>
+      <button onclick="addNumber('8')">8</button>
+      <button onclick="addNumber('9')">9</button>
 
-      <button class="empty-key"></button>
-      <button onclick="pressNumber('0')">0</button>
-      <button onclick="deleteNumber()">⌫</button>
+      <button class="empty"></button>
+      <button onclick="addNumber('0')">0</button>
+      <button onclick="removeNumber()">⌫</button>
 
     </div>
 
-    <p id="errorMessage" class="error-message"></p>
+    <p id="pinError" class="pin-error"></p>
 
-    <p class="lock-footer">
-      Protected on this device
+    <p class="protected">
+      🛡 Protected on this device
     </p>
 
   </div>
@@ -103,16 +88,11 @@
 </div>
 
 
-<!-- =========================
-     ACTUAL APP
-     HIDDEN UNTIL UNLOCKED
-========================= -->
+<!-- ================= MAIN APP ================= -->
 
 <div id="mainApp" class="main-app hidden">
 
   <div class="app">
-
-    <!-- HEADER -->
 
     <header class="header">
 
@@ -121,12 +101,8 @@
         <p>Secure API Key Manager</p>
       </div>
 
-      <button
-        class="add-btn"
-        onclick="openModal()">
-
+      <button class="add-button" onclick="openModal()">
         +
-
       </button>
 
     </header>
@@ -136,11 +112,9 @@
 
     <section class="stats">
 
-      <div class="card">
+      <div class="stat-card">
 
-        <div class="card-icon">
-          🔑
-        </div>
+        <div class="stat-icon">🔑</div>
 
         <p>Total Keys</p>
 
@@ -149,11 +123,9 @@
       </div>
 
 
-      <div class="card">
+      <div class="stat-card">
 
-        <div class="card-icon green">
-          ✓
-        </div>
+        <div class="stat-icon green">✓</div>
 
         <p>Valid Keys</p>
 
@@ -162,11 +134,9 @@
       </div>
 
 
-      <div class="card">
+      <div class="stat-card">
 
-        <div class="card-icon yellow">
-          ⚠
-        </div>
+        <div class="stat-icon yellow">⚠</div>
 
         <p>Needs Check</p>
 
@@ -175,11 +145,9 @@
       </div>
 
 
-      <div class="card">
+      <div class="stat-card">
 
-        <div class="card-icon blue">
-          💰
-        </div>
+        <div class="stat-icon blue">💰</div>
 
         <p>Estimated Cost</p>
 
@@ -192,7 +160,7 @@
 
     <!-- SEARCH -->
 
-    <div class="search">
+    <div class="search-box">
 
       <span>⌕</span>
 
@@ -210,42 +178,30 @@
 
     <div class="filters">
 
-      <button
-        class="filter active"
+      <button class="filter active"
         onclick="filterKeys('all', this)">
-
         All
-
       </button>
 
-      <button
-        class="filter"
+      <button class="filter"
         onclick="filterKeys('valid', this)">
-
         Valid
-
       </button>
 
-      <button
-        class="filter"
+      <button class="filter"
         onclick="filterKeys('check', this)">
-
         Needs Check
-
       </button>
 
-      <button
-        class="filter"
+      <button class="filter"
         onclick="filterKeys('invalid', this)">
-
         Invalid
-
       </button>
 
     </div>
 
 
-    <!-- KEYS -->
+    <!-- KEY AREA -->
 
     <main id="keysContainer">
 
@@ -262,12 +218,9 @@
           managing your providers.
         </p>
 
-        <button
-          class="primary-btn"
+        <button class="primary-button"
           onclick="openModal()">
-
           + Add API Key
-
         </button>
 
       </div>
@@ -277,40 +230,30 @@
   </div>
 
 
-  <!-- LOCK BUTTON -->
+  <!-- LOCK -->
 
-  <button
-    class="vault-lock-btn"
-    onclick="lockVault()">
-
+  <button class="lock-button" onclick="lockVault()">
     🔒 Lock
-
   </button>
 
 
-  <!-- BOTTOM NAV -->
+  <!-- NAV -->
 
   <nav class="bottom-nav">
 
-    <button class="nav-item active">
-
+    <button class="nav active">
       <span>🔑</span>
       <small>Keys</small>
-
     </button>
 
-    <button class="nav-item">
-
+    <button class="nav">
       <span>📊</span>
       <small>Usage</small>
-
     </button>
 
-    <button class="nav-item">
-
+    <button class="nav">
       <span>⚙️</span>
       <small>Settings</small>
-
     </button>
 
   </nav>
@@ -318,52 +261,44 @@
 </div>
 
 
-<!-- =========================
-     ADD API KEY MODAL
-========================= -->
+<!-- ================= ADD KEY ================= -->
 
-<div
-  id="addKeyModal"
-  class="modal-overlay">
+<div id="modal" class="modal-background">
 
   <div class="modal">
 
-    <div class="modal-top">
+    <div class="modal-header">
 
       <div class="modal-icon">
         🔐
       </div>
 
-      <button
-        class="close-btn"
-        onclick="closeModal()">
-
+      <button class="close" onclick="closeModal()">
         ×
-
       </button>
 
     </div>
 
     <h2>Add API Key</h2>
 
-    <p class="modal-description">
+    <p class="modal-subtitle">
       Add a provider key to your secure vault.
     </p>
+
 
     <label>KEY NAME</label>
 
     <input
       id="keyName"
-      class="form-input"
+      class="input"
       type="text"
       placeholder="e.g. My Production Key"
     >
 
+
     <label>PROVIDER</label>
 
-    <select
-      id="provider"
-      class="form-input">
+    <select id="provider" class="input">
 
       <option>OpenAI</option>
       <option>Gemini</option>
@@ -374,9 +309,10 @@
 
     </select>
 
+
     <label>API KEY</label>
 
-    <div class="key-input">
+    <div class="api-input">
 
       <input
         id="apiKey"
@@ -384,11 +320,10 @@
         placeholder="Paste your API key"
       >
 
-      <button onclick="toggleKey()">
-        👁
-      </button>
+      <button onclick="toggleKey()">👁</button>
 
     </div>
+
 
     <div class="security-box">
 
@@ -399,28 +334,20 @@
         <strong>Protected locally</strong>
 
         <p>
-          Secure storage will be added in
-          the vault security stage.
+          Your API key is kept masked in the interface.
         </p>
 
       </div>
 
     </div>
 
-    <button
-      class="save-btn"
-      onclick="saveKey()">
 
+    <button class="save-button" onclick="saveKey()">
       Save API Key
-
     </button>
 
-    <button
-      class="cancel-btn"
-      onclick="closeModal()">
-
+    <button class="cancel-button" onclick="closeModal()">
       Cancel
-
     </button>
 
   </div>
