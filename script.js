@@ -1,63 +1,83 @@
 let currentFilter = "all";
 
 
-// =========================
-// OPEN / CLOSE MODAL
-// =========================
+/* =========================
+   OPEN MODAL
+========================= */
 
 function openModal() {
 
-  document
-    .getElementById("addKeyModal")
-    .classList.add("show");
+  const modal =
+    document.getElementById("addKeyModal");
+
+  modal.classList.add("show");
 
 }
 
+
+/* =========================
+   CLOSE MODAL
+========================= */
 
 function closeModal() {
 
-  document
-    .getElementById("addKeyModal")
-    .classList.remove("show");
+  const modal =
+    document.getElementById("addKeyModal");
+
+  modal.classList.remove("show");
 
 }
 
 
-// =========================
-// SHOW / HIDE API KEY
-// =========================
+/* =========================
+   SHOW / HIDE KEY
+========================= */
 
 function toggleKey() {
 
-  const input = document.getElementById("apiKey");
+  const input =
+    document.getElementById("apiKey");
+
+  const button =
+    document.getElementById("eyeButton");
+
 
   if (input.type === "password") {
 
     input.type = "text";
 
+    button.textContent = "🙈";
+
   } else {
 
     input.type = "password";
+
+    button.textContent = "👁";
 
   }
 
 }
 
 
-// =========================
-// SAVE API KEY
-// =========================
+/* =========================
+   SAVE KEY
+========================= */
 
 function saveKey() {
 
   const name =
-    document.getElementById("keyName").value.trim();
+    document.getElementById("keyName")
+      .value
+      .trim();
 
   const provider =
-    document.getElementById("provider").value;
+    document.getElementById("provider")
+      .value;
 
   const apiKey =
-    document.getElementById("apiKey").value.trim();
+    document.getElementById("apiKey")
+      .value
+      .trim();
 
 
   if (!name) {
@@ -90,38 +110,35 @@ function saveKey() {
   card.dataset.status = "check";
 
 
-  const masked =
-    maskKey(apiKey);
-
-
-  let iconClass = "custom";
-
   let letter = "C";
+
+  let iconClass = "";
 
 
   if (provider === "OpenAI") {
 
-    iconClass = "";
-
     letter = "O";
+    iconClass = "openai";
 
   }
 
   else if (provider === "Gemini") {
 
-    iconClass = "gemini";
-
     letter = "G";
+    iconClass = "gemini";
 
   }
 
   else if (provider === "Anthropic") {
 
+    letter = "A";
     iconClass = "anthropic";
 
-    letter = "A";
-
   }
+
+
+  const masked =
+    maskKey(apiKey);
 
 
   card.innerHTML = `
@@ -133,8 +150,11 @@ function saveKey() {
       </div>
 
       <div>
-        <h3>${escapeHTML(provider)}</h3>
-        <p>${escapeHTML(name)}</p>
+
+        <h3>${safe(name)}</h3>
+
+        <p>${safe(provider)}</p>
+
       </div>
 
       <span class="status check">
@@ -148,7 +168,7 @@ function saveKey() {
 
       <span>${masked}</span>
 
-      <button onclick="copyKey('${escapeAttribute(apiKey)}')">
+      <button>
         Copy
       </button>
 
@@ -157,13 +177,28 @@ function saveKey() {
 
     <div class="key-info">
 
-      <span>Last checked: Never</span>
+      <span>
+        Last checked: Never
+      </span>
 
-      <span>Balance: Unknown</span>
+      <span>
+        Balance: Unknown
+      </span>
 
     </div>
 
   `;
+
+
+  const copyButton =
+    card.querySelector(".key-value button");
+
+
+  copyButton.onclick = function() {
+
+    copyKey(apiKey);
+
+  };
 
 
   container.prepend(card);
@@ -172,21 +207,24 @@ function saveKey() {
   updateStats();
 
 
-  document.getElementById("keyName").value = "";
+  document.getElementById("keyName")
+    .value = "";
 
-  document.getElementById("apiKey").value = "";
+  document.getElementById("apiKey")
+    .value = "";
+
 
   closeModal();
 
 
-  alert("API key added successfully.");
+  alert("API key added!");
 
 }
 
 
-// =========================
-// MASK KEY
-// =========================
+/* =========================
+   MASK KEY
+========================= */
 
 function maskKey(key) {
 
@@ -198,7 +236,7 @@ function maskKey(key) {
 
 
   return (
-    key.substring(0, 4) +
+    key.substring(0,4) +
     "••••••••••" +
     key.substring(key.length - 4)
   );
@@ -206,30 +244,41 @@ function maskKey(key) {
 }
 
 
-// =========================
-// COPY
-// =========================
+/* =========================
+   COPY
+========================= */
 
 function copyKey(key) {
 
-  navigator.clipboard.writeText(key);
+  if (
+    navigator.clipboard &&
+    navigator.clipboard.writeText
+  ) {
 
-  alert("API key copied.");
+    navigator.clipboard.writeText(key);
+
+    alert("API key copied.");
+
+  } else {
+
+    alert("Copy is not supported here.");
+
+  }
 
 }
 
 
-// =========================
-// SEARCH
-// =========================
+/* =========================
+   SEARCH
+========================= */
 
 function searchKeys() {
 
+  const input =
+    document.getElementById("searchInput");
+
   const search =
-    document
-      .getElementById("searchInput")
-      .value
-      .toLowerCase();
+    input.value.toLowerCase();
 
 
   document
@@ -239,27 +288,35 @@ function searchKeys() {
       const text =
         card.innerText.toLowerCase();
 
-      const matchesSearch =
+      const searchMatch =
         text.includes(search);
 
-      const matchesFilter =
+      const filterMatch =
         currentFilter === "all" ||
         card.dataset.status === currentFilter;
 
 
-      card.style.display =
-        matchesSearch && matchesFilter
-          ? "block"
-          : "none";
+      if (
+        searchMatch &&
+        filterMatch
+      ) {
+
+        card.style.display = "block";
+
+      } else {
+
+        card.style.display = "none";
+
+      }
 
     });
 
 }
 
 
-// =========================
-// FILTER
-// =========================
+/* =========================
+   FILTERS
+========================= */
 
 function filterKeys(status, button) {
 
@@ -283,9 +340,9 @@ function filterKeys(status, button) {
 }
 
 
-// =========================
-// UPDATE STATS
-// =========================
+/* =========================
+   UPDATE NUMBERS
+========================= */
 
 function updateStats() {
 
@@ -300,13 +357,18 @@ function updateStats() {
 
   cards.forEach(card => {
 
-    if (card.dataset.status === "valid") {
+    if (
+      card.dataset.status === "valid"
+    ) {
 
       valid++;
 
     }
 
-    if (card.dataset.status === "check") {
+
+    if (
+      card.dataset.status === "check"
+    ) {
 
       check++;
 
@@ -327,11 +389,11 @@ function updateStats() {
 }
 
 
-// =========================
-// BASIC HTML SAFETY
-// =========================
+/* =========================
+   SAFE TEXT
+========================= */
 
-function escapeHTML(text) {
+function safe(text) {
 
   return text
     .replaceAll("&", "&amp;")
@@ -343,10 +405,25 @@ function escapeHTML(text) {
 }
 
 
-function escapeAttribute(text) {
+/* =========================
+   CLOSE WHEN CLICKING OUTSIDE
+========================= */
 
-  return text
-    .replaceAll("\\", "\\\\")
-    .replaceAll("'", "\\'");
+document.addEventListener(
+  "click",
+  function(event) {
 
-}
+    const modal =
+      document.getElementById("addKeyModal");
+
+
+    if (
+      event.target === modal
+    ) {
+
+      closeModal();
+
+    }
+
+  }
+);
