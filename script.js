@@ -1,30 +1,193 @@
-let currentFilter = "all";
+/* =========================
+   PIN
+========================= */
+
+const CORRECT_PIN = "7890";
+
+let enteredPIN = "";
 
 
 /* =========================
-   OPEN MODAL
+   PIN NUMBER
 ========================= */
 
-function openModal() {
+function pressNumber(number) {
 
-  const modal =
-    document.getElementById("addKeyModal");
+  if (enteredPIN.length >= 4) {
+    return;
+  }
 
-  modal.classList.add("show");
+  enteredPIN += number;
+
+  updateDots();
+
+  if (enteredPIN.length === 4) {
+
+    setTimeout(checkPIN, 150);
+
+  }
 
 }
 
 
 /* =========================
-   CLOSE MODAL
+   DELETE
 ========================= */
+
+function deleteNumber() {
+
+  enteredPIN =
+    enteredPIN.slice(0, -1);
+
+  updateDots();
+
+}
+
+
+/* =========================
+   DOTS
+========================= */
+
+function updateDots() {
+
+  const dots =
+    document.querySelectorAll(
+      "#pinDots span"
+    );
+
+
+  dots.forEach(
+    (dot, index) => {
+
+      if (index < enteredPIN.length) {
+
+        dot.classList.add("filled");
+
+      } else {
+
+        dot.classList.remove("filled");
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =========================
+   CHECK PIN
+========================= */
+
+function checkPIN() {
+
+  const error =
+    document.getElementById(
+      "errorMessage"
+    );
+
+
+  if (enteredPIN === CORRECT_PIN) {
+
+    unlockApp();
+
+  } else {
+
+    error.textContent =
+      "Incorrect PIN. Try again.";
+
+    enteredPIN = "";
+
+    updateDots();
+
+    setTimeout(() => {
+
+      error.textContent = "";
+
+    }, 1800);
+
+  }
+
+}
+
+
+/* =========================
+   UNLOCK
+========================= */
+
+function unlockApp() {
+
+  document
+    .getElementById("lockScreen")
+    .classList.add("hidden");
+
+
+  document
+    .getElementById("mainApp")
+    .classList.remove("hidden");
+
+
+  enteredPIN = "";
+
+  updateDots();
+
+}
+
+
+/* =========================
+   LOCK
+========================= */
+
+function lockVault() {
+
+  document
+    .getElementById("mainApp")
+    .classList.add("hidden");
+
+
+  document
+    .getElementById("lockScreen")
+    .classList.remove("hidden");
+
+
+  enteredPIN = "";
+
+  updateDots();
+
+}
+
+
+/* =========================
+   BIOMETRIC PLACEHOLDER
+========================= */
+
+function biometricUnlock() {
+
+  alert(
+    "Face ID / Fingerprint authentication will be connected in the biometric security part."
+  );
+
+}
+
+
+/* =========================
+   ADD KEY MODAL
+========================= */
+
+function openModal() {
+
+  document
+    .getElementById("addKeyModal")
+    .classList.add("show");
+
+}
+
 
 function closeModal() {
 
-  const modal =
-    document.getElementById("addKeyModal");
-
-  modal.classList.remove("show");
+  document
+    .getElementById("addKeyModal")
+    .classList.remove("show");
 
 }
 
@@ -38,37 +201,24 @@ function toggleKey() {
   const input =
     document.getElementById("apiKey");
 
-  const button =
-    document.getElementById("eyeButton");
 
-
-  if (input.type === "password") {
-
-    input.type = "text";
-
-    button.textContent = "🙈";
-
-  } else {
-
-    input.type = "password";
-
-    button.textContent = "👁";
-
-  }
+  input.type =
+    input.type === "password"
+      ? "text"
+      : "password";
 
 }
 
 
 /* =========================
-   SAVE KEY
+   SAVE DEMO KEY
 ========================= */
 
 function saveKey() {
 
   const name =
     document.getElementById("keyName")
-      .value
-      .trim();
+      .value.trim();
 
   const provider =
     document.getElementById("provider")
@@ -76,22 +226,14 @@ function saveKey() {
 
   const apiKey =
     document.getElementById("apiKey")
-      .value
-      .trim();
+      .value.trim();
 
 
-  if (!name) {
+  if (!name || !apiKey) {
 
-    alert("Please enter a key name.");
-
-    return;
-
-  }
-
-
-  if (!apiKey) {
-
-    alert("Please enter an API key.");
+    alert(
+      "Please enter both a name and API key."
+    );
 
     return;
 
@@ -99,112 +241,122 @@ function saveKey() {
 
 
   const container =
-    document.getElementById("keysContainer");
+    document.getElementById(
+      "keysContainer"
+    );
+
+
+  const empty =
+    container.querySelector(
+      ".empty-state"
+    );
+
+
+  if (empty) {
+    empty.remove();
+  }
 
 
   const card =
     document.createElement("div");
+
 
   card.className = "key-card";
 
   card.dataset.status = "check";
 
 
-  let letter = "C";
-
-  let iconClass = "";
-
-
-  if (provider === "OpenAI") {
-
-    letter = "O";
-    iconClass = "openai";
-
-  }
-
-  else if (provider === "Gemini") {
-
-    letter = "G";
-    iconClass = "gemini";
-
-  }
-
-  else if (provider === "Anthropic") {
-
-    letter = "A";
-    iconClass = "anthropic";
-
-  }
+  card.style.cssText = `
+    background:#0e1511;
+    border:1px solid #1b2821;
+    border-radius:21px;
+    padding:22px;
+    margin-bottom:15px;
+  `;
 
 
   const masked =
-    maskKey(apiKey);
+    apiKey.length > 8
+      ? apiKey.slice(0,4) +
+        "••••••••" +
+        apiKey.slice(-4)
+      : "••••••••";
 
 
   card.innerHTML = `
 
-    <div class="provider">
+    <div style="
+      display:flex;
+      align-items:center;
+      gap:14px;
+    ">
 
-      <div class="provider-icon ${iconClass}">
-        ${letter}
+      <div style="
+        width:50px;
+        height:50px;
+        border-radius:15px;
+        background:#173b28;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        color:#52df98;
+        font-size:22px;
+        font-weight:bold;
+      ">
+        ${provider.charAt(0)}
       </div>
 
       <div>
 
-        <h3>${safe(name)}</h3>
+        <h3>${escapeText(name)}</h3>
 
-        <p>${safe(provider)}</p>
+        <p style="
+          color:#707c75;
+          font-size:13px;
+          margin-top:4px;
+        ">
+          ${escapeText(provider)}
+        </p>
 
       </div>
 
-      <span class="status check">
+      <span style="
+        margin-left:auto;
+        color:#e6bb62;
+        background:#302714;
+        padding:7px 11px;
+        border-radius:20px;
+        font-size:11px;
+      ">
         ● Needs Check
       </span>
 
     </div>
 
 
-    <div class="key-value">
+    <div style="
+      margin-top:19px;
+      background:#080d0a;
+      border:1px solid #19231d;
+      border-radius:12px;
+      padding:13px;
+      display:flex;
+      justify-content:space-between;
+      font-family:monospace;
+      color:#aab4ae;
+    ">
 
       <span>${masked}</span>
-
-      <button>
-        Copy
-      </button>
-
-    </div>
-
-
-    <div class="key-info">
-
-      <span>
-        Last checked: Never
-      </span>
-
-      <span>
-        Balance: Unknown
-      </span>
 
     </div>
 
   `;
 
 
-  const copyButton =
-    card.querySelector(".key-value button");
-
-
-  copyButton.onclick = function() {
-
-    copyKey(apiKey);
-
-  };
-
-
   container.prepend(card);
 
 
-  updateStats();
+  closeModal();
 
 
   document.getElementById("keyName")
@@ -214,56 +366,36 @@ function saveKey() {
     .value = "";
 
 
-  closeModal();
-
-
-  alert("API key added!");
+  updateStats();
 
 }
 
 
 /* =========================
-   MASK KEY
+   STATS
 ========================= */
 
-function maskKey(key) {
+function updateStats() {
 
-  if (key.length <= 8) {
-
-    return "••••••••";
-
-  }
-
-
-  return (
-    key.substring(0,4) +
-    "••••••••••" +
-    key.substring(key.length - 4)
-  );
-
-}
+  const cards =
+    document.querySelectorAll(
+      ".key-card"
+    );
 
 
-/* =========================
-   COPY
-========================= */
+  document.getElementById(
+    "totalKeys"
+  ).textContent = cards.length;
 
-function copyKey(key) {
 
-  if (
-    navigator.clipboard &&
-    navigator.clipboard.writeText
-  ) {
+  document.getElementById(
+    "validKeys"
+  ).textContent = 0;
 
-    navigator.clipboard.writeText(key);
 
-    alert("API key copied.");
-
-  } else {
-
-    alert("Copy is not supported here.");
-
-  }
+  document.getElementById(
+    "checkKeys"
+  ).textContent = cards.length;
 
 }
 
@@ -274,31 +406,55 @@ function copyKey(key) {
 
 function searchKeys() {
 
-  const input =
-    document.getElementById("searchInput");
-
   const search =
-    input.value.toLowerCase();
+    document.getElementById(
+      "searchInput"
+    ).value.toLowerCase();
 
 
   document
     .querySelectorAll(".key-card")
     .forEach(card => {
 
-      const text =
-        card.innerText.toLowerCase();
+      card.style.display =
+        card.innerText
+          .toLowerCase()
+          .includes(search)
+          ? "block"
+          : "none";
 
-      const searchMatch =
-        text.includes(search);
+    });
 
-      const filterMatch =
-        currentFilter === "all" ||
-        card.dataset.status === currentFilter;
+}
 
+
+/* =========================
+   FILTER
+========================= */
+
+function filterKeys(status, button) {
+
+  document
+    .querySelectorAll(".filter")
+    .forEach(btn => {
+
+      btn.classList.remove(
+        "active"
+      );
+
+    });
+
+
+  button.classList.add("active");
+
+
+  document
+    .querySelectorAll(".key-card")
+    .forEach(card => {
 
       if (
-        searchMatch &&
-        filterMatch
+        status === "all" ||
+        card.dataset.status === status
       ) {
 
         card.style.display = "block";
@@ -315,98 +471,23 @@ function searchKeys() {
 
 
 /* =========================
-   FILTERS
-========================= */
-
-function filterKeys(status, button) {
-
-  currentFilter = status;
-
-
-  document
-    .querySelectorAll(".filter")
-    .forEach(btn => {
-
-      btn.classList.remove("active");
-
-    });
-
-
-  button.classList.add("active");
-
-
-  searchKeys();
-
-}
-
-
-/* =========================
-   UPDATE NUMBERS
-========================= */
-
-function updateStats() {
-
-  const cards =
-    document.querySelectorAll(".key-card");
-
-
-  let valid = 0;
-
-  let check = 0;
-
-
-  cards.forEach(card => {
-
-    if (
-      card.dataset.status === "valid"
-    ) {
-
-      valid++;
-
-    }
-
-
-    if (
-      card.dataset.status === "check"
-    ) {
-
-      check++;
-
-    }
-
-  });
-
-
-  document.getElementById("totalKeys")
-    .textContent = cards.length;
-
-  document.getElementById("validKeys")
-    .textContent = valid;
-
-  document.getElementById("checkKeys")
-    .textContent = check;
-
-}
-
-
-/* =========================
    SAFE TEXT
 ========================= */
 
-function safe(text) {
+function escapeText(text) {
 
   return text
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 
 }
 
 
 /* =========================
-   CLOSE WHEN CLICKING OUTSIDE
+   OUTSIDE MODAL
 ========================= */
 
 document.addEventListener(
@@ -414,7 +495,9 @@ document.addEventListener(
   function(event) {
 
     const modal =
-      document.getElementById("addKeyModal");
+      document.getElementById(
+        "addKeyModal"
+      );
 
 
     if (
